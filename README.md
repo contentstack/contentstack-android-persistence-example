@@ -170,8 +170,10 @@ Helper helper = new Helper(realmInstance)
 SyncManager manager = new SyncManager(helper, stack);
 manager.stackRequest()
 ```
-<img src="https://drive.google.com/open?id=1rWBQlocqSLPabHJATRbrP4yLeRDqZaZY" width="300" height="550">
----- https://drive.google.com/file/d/1rWBQlocqSLPabHJATRbrP4yLeRDqZaZY/view?usp=sharing
+Screenshot
+
+![Screenshot](https://cdn.pixabay.com/photo/2016/06/18/17/42/image-1465348_960_720.jpg)
+
 
 ### More Resources
 * [Getting started with Android SDK](https://www.contentstack.com/docs/platforms/android)
