@@ -37,7 +37,7 @@ Now that we have created the sample data, it’s time to use and configure the p
 To get your app up and running quickly, we have created a sample app. Clone the Github repo given below and change the configuration as per your need:
 
 ```
-$ git clone [https://github.com/contentstack/contentstack-android-persistence-example.git(https://github.com/contentstack/contentstack-android-persistence-example.git)
+$ git clone https://github.com/contentstack/contentstack-android-persistence-example.git
 ```
 
 Now add your Contentstack API Key, Delivery Token, and Environment to the project during the SDK initialization step. (Find your [Stack's API Key and Delivery Token](https://www.contentstack.com/docs/apis/content-delivery-api/#authentication
@@ -75,8 +75,8 @@ Now that your Realm installation is ready, let's look at the steps involved in s
 There are three important items to be mapped in our Synchronization process:
 
 - Sync token/pagination token
-- Entries Map
-- Assets  Map
+- Entries Mapping
+- Assets  Mapping
 
 Let’s look at how to persists sync_token & pagonation token
 
@@ -92,9 +92,10 @@ if (stackResponse.getPaginationToken()!=null){
 }
 ```
 
-#### Entry Map
+#### Entry Mapping
 
-To begin with, let’s consider an example of our Example app. Let’s say we have  content type: Session,  Let’s see how to implement this example.
+To begin with, let’s consider an example of our Example app. Let’s say we have  content type: Session.
+Let’s see how to implement this example.
 
 Create a table class named Session extending RealmObject, and add following code to implement EntityFields as shown below:
 
@@ -152,7 +153,7 @@ public class Session extends RealmObject {
 
 You also need to implement the fieldMapping function which returns the mapping of attributes and entry fields in Contentstack.
 
-Similarly, we can add other entity and mapping for each entity.
+Similarly, we can add other entries and mapping for each entry.
 
 #### Asset Map
 
