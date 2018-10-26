@@ -52,7 +52,7 @@ This will initiate your project.
 #### Step 6: Install and set up Realm
 We need to first download Realm and install it. To do so, perform the steps given below:
 
-- Add the latest version of [Realm](https://realm.io/docs/java/latest) library in your project and follow [Installation](https://realm.io/docs/java/latest#installation) gulde to complete setup.
+- Add the latest version of [Realm](https://realm.io/docs/java/latest) library in your project and follow the [installation](https://realm.io/docs/java/latest#installation) gulde to complete setup.
 
 #### Step 7: Install Contentstack Android SDK and SyncManager
 
