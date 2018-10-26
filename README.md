@@ -172,7 +172,7 @@ manager.stackRequest()
 ```
 Screenshot
 
-<img src="https://github.com/contentstack/contentstack-android-persistence-example/blob/master/app/src/main/assets/image/example.png"  height="600" width="300">
+<img src="https://github.com/contentstack/contentstack-android-persistence-example/blob/master/app/src/main/assets/image/example.png"  height="500" width="300">
 
 
 
