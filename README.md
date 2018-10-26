@@ -36,7 +36,9 @@ Now that we have created the sample data, it’s time to use and configure the p
 #### Step 5: Clone and configure the application
 To get your app up and running quickly, we have created a sample app. Clone the Github repo given below and change the configuration as per your need:
 
+```
 $ git clone [https://github.com/contentstack/contentstack-android-persistence-example.git](https://github.com/contentstack/contentstack-android-persistence-example.git)
+```
 
 Now add your Contentstack API Key, Delivery Token, and Environment to the project during the SDK initialization step. (Find your [Stack's API Key and Delivery Token](https://www.contentstack.com/docs/apis/content-delivery-api/#authentication
 ).)
@@ -58,14 +60,13 @@ Now that your Realm installation is ready, let's look at the steps involved in s
 
 1. Download and set up the Contentstack android SDK. Read the [Contentstack android SDK Documentation]([https://www.contentstack.com/docs/platforms/android](https://www.contentstack.com/docs/platforms/android)) for more details.
 
-3. You will find the "syncwrapper" folder, which contains the following four files:
-- SyncManager
-- RealmPersistenceHelper
-- SyncStore
-- DbQuery
+2. You will find the "syncwrapper" folder, which contains the following four files:
+   - SyncManager
+   - RealmPersistenceHelper
+   - SyncStore
+   - DbQuery
 
 3. Add the "syncwrapper" folder to your src folder in project.
-
 
 
 #### Step 7: Map data
