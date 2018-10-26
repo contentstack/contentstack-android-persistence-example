@@ -33,10 +33,6 @@ Now that we have created the sample data, it’s time to use and configure the p
 ### Step 5: Set up and initialize Android SDK
 To set up and initialize Contentstack’s Android SDK, refer to our documentation [here](https://www.contentstack.com/docs/platforms/android#getting-started).
 
-```
-Stack stack = Contentstack.stack(context, "api_key", "delivery_token", "enviroment_name");
-````
-
 ### Step 6: Clone and configure the application
 To get your app up and running quickly, we have created a sample app. Clone the Github repo given below and change the configuration as per your need:
 
@@ -46,9 +42,8 @@ Now add your Contentstack API Key, Delivery Token, and Environment to the projec
 ).)
 
 ```
-Config config = new Config();
-config.setHost(BuildConfig.STACK_URL);
 Stack stack = Contentstack.stack(getApplicationContext(), “api_key”, “delivery_token”, “environment”, config);
+
 ```
 
 This will initiate your project.
