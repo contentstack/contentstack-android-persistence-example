@@ -12,11 +12,11 @@ Perform the steps given below to use this app.
 
 In this tutorial, we will first go through the steps involved in configuring Contentstack and then look at the steps required to customize and use the presentation layer.
 
-### Step 1: Create a stack
+#### Step 1: Create a stack
 Log in to your Contentstack account, and [create a new stack](https://www.contentstack.com/docs/guide/stack#create-a-new-stack). Read more about [stacks](https://www.contentstack.com/docs/guide/stack).
-### Step 2: Add a publishing environment
+#### Step 2: Add a publishing environment
 [Add a publishing environment](https://www.contentstack.com/docs/guide/environments#add-an-environment) to publish your content in Contentstack. Provide the necessary details as per your requirement. Read more about [environments](https://www.contentstack.com/docs/guide/environments).
-### Step 3: Import content types
+#### Step 3: Import content types
 For this app, we need just one content type: Session. Here’s what it’s needed for:
 
 - Session: Lets you add the session content to your app
@@ -26,14 +26,14 @@ For quick integration, we have already created the content type. [Download the c
 
 Now that all the content types are ready, let’s add some content for your sync playground app.
 
-### Step 4: Adding content
+#### Step 4: Adding content
 [Create](https://www.contentstack.com/docs/guide/content-management#add-a-new-entry) and [publish](https://www.contentstack.com/docs/guide/content-management#publish-an-entry) entries for the ‘Session’ content type.
 
 Now that we have created the sample data, it’s time to use and configure the presentation layer.
-### Step 5: Set up and initialize Android SDK
-To set up and initialize Contentstack’s Android SDK, refer to our documentation [here](https://www.contentstack.com/docs/platforms/android#getting-started).
 
-### Step 6: Clone and configure the application
+
+
+#### Step 5: Clone and configure the application
 To get your app up and running quickly, we have created a sample app. Clone the Github repo given below and change the configuration as per your need:
 
 $ git clone [https://github.com/contentstack/contentstack-android-persistence-example.git](https://github.com/contentstack/contentstack-android-persistence-example.git)
@@ -42,88 +42,137 @@ Now add your Contentstack API Key, Delivery Token, and Environment to the projec
 ).)
 
 ```
-Stack stack = Contentstack.stack(getApplicationContext(), “api_key”, “delivery_token”, “environment”, config);
-
+Stack stack = Contentstack.stack(context,“api_key”, “delivery_token”, “environment");
 ```
 
 This will initiate your project.
 
-### Step 7: Map data
+#### Step 6: Install and set up Realm
+We need to first download Realm and install it. To do so, perform the steps given below:
 
- In order to sync this data with Realm, we need to add data mappings. The three important items to be mapped in our Synchronization process are as follows:
+- Add the latest version of [Realm](https://realm.io/docs/java/latest) library in your project and follow [Installation](https://realm.io/docs/java/latest#installation) gulde to complete setup.
 
-* Sync token/Pagination token
-* Entries
-* Assets
+#### Step 7: Install Contentstack Android SDK and SyncManager
 
-Let’s look at how each of the above can be mapped.
+Now that your Realm installation is ready, let's look at the steps involved in setting up your Contentstack SDK.
 
-### Sync Token Mapping
-To save Sync-Token and Pagination-Token, we need the SyncStore table which will manage the storage and retrieval of updated sync token and pagination token.
+1. Download and set up the Contentstack android SDK. Read the [Contentstack android SDK Documentation]([https://www.contentstack.com/docs/platforms/android](https://www.contentstack.com/docs/platforms/android)) for more details.
+
+3. You will find the "syncwrapper" folder, which contains the following four files:
+- SyncManager
+- RealmPersistenceHelper
+- SyncStore
+- DbQuery
+
+3. Add the "syncwrapper" folder to your src folder in project.
+
+
+
+#### Step 7: Map data
+
+
+There are three important items to be mapped in our Synchronization process:
+
+- Sync token/pagination token
+- Entries Map
+- Assets  Map
+
+Let’s look at how to persists sync_token & pagonation token
+
+#### Sync token/pagination token
+
+To save Sync-Token and Pagination-Token, we need SyncStore class file  which will manage the storage and retrieval of updated sync token and pagination token.
 
 ```
 if (stackResponse.getPaginationToken()!=null){
-   persistsToken(stackResponse.getPaginationToken());
-}else {
-   persistsToken(stackResponse.getSyncToken());
+   persistsToken(stackStack.getPaginationToken());
+}else{
+   persistsToken(stackStack.getSyncToken());
 }
 ```
 
-### Entry Mapping
-To begin with, let’s consider an example of our Example app. Let’s say we have two content types: Session and Speaker. And, the ‘Session’ content type has a reference field that refers to multiple entries of the Speaker content type. Let’s see how to implement this example.
+#### Entry Map
+
+To begin with, let’s consider an example of our Example app. Let’s say we have  content type: Session,  Let’s see how to implement this example.
 
 Create a table class named Session extending RealmObject, and add following code to implement EntityFields as shown below:
 
 ```
-'@RealmClass(name = "session")
+// @RealmClass accepts ("name= "content_type_uid"")
+@RealmClass(name = "session")
 public class Session extends RealmObject {
+
+   *************************************
    // Mandatory fields
    @PrimaryKey
    @RealmField(name = "uid")
    private String uid;
-   // user defined fields
-   @RealmField(name = "title")
+   *************************************
+
+//Note: the annotation name will be content_type's field id
+   @RealmField(name="title")
+//user defined fields may be anything of user liking.
    private String mTitle;
-   @RealmField(name = "is_popular")
+
+   @RealmField(name="is_popular")
    private String mIsPopular;
-   @RealmField(name = "type")
+
+   @RealmField(name="type")
    private String mType;
-   @RealmField(name = "session_id")
+
+   @RealmField(name="session_id")
    private String mId;
-   @RealmField(name = "tags")
+
+   @RealmField(name="tags")
    private String mTags;
-   @RealmField(name = "locale")
+
+   @RealmField(name="locale")
    private String mLocale;
-   @RealmField(name = "speakers")
+
+   @RealmField(name="speakers")
    private RealmList<Speaker> speaker;
-   @RealmField(name = "track")
+
+   @RealmField(name="track")
    private String mTrack;
-   @RealmField(name = "start_time")
+
+   @RealmField(name="start_time")
    private String mStartTime;
-   @RealmField(name = "end_time")
+
+   @RealmField(name="end_time")
    private String mEndTime;
-   @RealmField(name = "room")
+
+   @RealmField(name="room")
    private Room mRoom;
-   // provide getter setter for fields
+
+  ... Generated getters and setters ...
+
    }
    ```
 
 You also need to implement the fieldMapping function which returns the mapping of attributes and entry fields in Contentstack.
 
 Similarly, we can add other entity and mapping for each entity.
-Asset Mapping
+
+#### Asset Map
+
 To map Assets, you need to create a table for assets named SysAssets and extend RealmObject. Add the following code to implement AssetProtocol.
 
 ```
-@RealmClass(name = "sys_assets")
+@RealmClass(name="sys_assets")
 public class SysAssets extends RealmObject {
+
+******************************
    // Mandatory fields
    @PrimaryKey
    @RealmField(name = "uid")
    private String uid;
-   // user defined fields
-   @RealmField(name = "created_at")
+******************************
+
+ // Note: the annotation name will be content_type's field id
+   @RealmField(name="created_at")
+ //user defined fields may be anything of user liking.
    private String created_at;
+
    @RealmField(name = "updated_at")
    private String updated_at;
    @RealmField(name = "created_by")
@@ -150,7 +199,9 @@ public class SysAssets extends RealmObject {
    private String title;
    @RealmField(name = "publish_details")
    private String publish_details;
-   // Provide getter & setters for the class
+
+   ... Generated getters and setters ...
+
    }
 ```
 
@@ -172,7 +223,7 @@ manager.stackRequest()
 ```
 Screenshot
 
-<img src="https://github.com/contentstack/contentstack-android-persistence-example/blob/master/app/src/main/assets/image/example.png"  height="500" width="250">
+<img src="https://github.com/contentstack/contentstack-android-persistence-example/blob/master/app/src/main/assets/image/example.png"  height="500" width="280">
 
 
 
@@ -181,8 +232,4 @@ Screenshot
 * [Using the Sync API with Android SDK](https://www.contentstack.com/docs/guide/synchronization/using-the-sync-api-with-android-sdk)
 * [Using Persistence Library with Android SDK](https://www.contentstack.com/docs/guide/synchronization/using-realm-persistence-library-with-android-sync-sdk)
 * [Sync API documentation](https://www.contentstack.com/docs/apis/content-delivery-api/#synchronization)
-
-
-
-
 
