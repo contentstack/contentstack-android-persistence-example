@@ -69,7 +69,7 @@ Now that your Realm installation is ready, let's look at the steps involved in s
 3. Add the "syncwrapper" folder to your src folder in project.
 
 
-#### Step 7: Map data
+#### Step 8: Map data
 
 
 There are three important items to be mapped in our Synchronization process:
@@ -209,7 +209,7 @@ public class SysAssets extends RealmObject {
 
 Now, our final step is to initiate SyncManager and begin with the Sync content type.
 
-### Step 8: Initiate SyncManager and Sync
+### Step 9: Initiate SyncManager and Sync
 Finally, after setting up the content mapping, initiate SyncManager. It takes Stack instance and RealmPersistenceHelper class instance as follows:
 
 ```
