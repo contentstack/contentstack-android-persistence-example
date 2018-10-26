@@ -165,9 +165,9 @@ Stack stack = Contentstack.stack(context, "api_key", "access_token", "environmen
 
 //Get realm instance like below
 Realm realmInstance = Realm.getDefaultInstance();
-Get helper instance like
-Helper helper = new Helper(realmInstance)
-SyncManager manager = new SyncManager(helper, stack);
+Get realmPersistenceHelper instance like
+RealmPersistenceHelper realmPersistenceHelper = new RealmPersistenceHelper(realmInstance)
+SyncManager manager = new SyncManager(realmPersistenceHelper, stack);
 manager.stackRequest()
 ```
 Screenshot

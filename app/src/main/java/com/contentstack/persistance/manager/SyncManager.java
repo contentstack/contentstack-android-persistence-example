@@ -22,7 +22,6 @@ import java.lang.reflect.ParameterizedType;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.Objects;
 import java.util.Set;
 import java.util.function.Consumer;
 
@@ -35,7 +34,7 @@ public class SyncManager {
 
     private Stack stackInstance;
 
-    private Helper helperInstance;
+    private RealmPersistenceHelper realmPersistenceHelperInstance;
 
     private Realm realmInstance;
 
@@ -51,15 +50,15 @@ public class SyncManager {
 
     /**
      * SyncManager Constructor to initialise the Sync Manager
-     * and get @{@link Helper} and @{@link Stack} class instance
-     * @param helper @{@link Helper} instance
+     * and get @{@link RealmPersistenceHelper} and @{@link Stack} class instance
+     * @param realmPersistenceHelper @{@link RealmPersistenceHelper} instance
      * @param stackInstance @{@link Stack} instance
      */
-    public SyncManager(Helper helper, Stack stackInstance) {
+    public SyncManager(RealmPersistenceHelper realmPersistenceHelper, Stack stackInstance) {
 
-        this.helperInstance = helper;
+        this.realmPersistenceHelperInstance = realmPersistenceHelper;
         this.stackInstance  = stackInstance;
-        realmInstance = helperInstance.getRealmInstance();
+        realmInstance = realmPersistenceHelperInstance.getRealmInstance();
         setClassMapping();
     }
 
@@ -192,7 +191,7 @@ public class SyncManager {
 
                     JSONArray mapJSON = new JSONArray();
                     mapJSON.put(jsonDECODER(modelClass, resultObject));
-                    helperInstance.findOrCreate(modelClass, uid, mapJSON);
+                    realmPersistenceHelperInstance.findOrCreate(modelClass, uid, mapJSON);
 
                 }else if (publishType.equalsIgnoreCase("entry_unpublished")
                         || publishType.equalsIgnoreCase("entry_deleted")
@@ -200,10 +199,10 @@ public class SyncManager {
                         || publishType.equalsIgnoreCase("asset_deleted")){
 
                     if (item.has("data")){
-                        helperInstance.deleteRow(modelClass, uid);
+                        realmPersistenceHelperInstance.deleteRow(modelClass, uid);
                     }
                 }else if (publishType.equalsIgnoreCase("content_type_deleted")){
-                    helperInstance.deleteTable(modelClass);
+                    realmPersistenceHelperInstance.deleteTable(modelClass);
                 }
             }
         }
@@ -419,7 +418,7 @@ public class SyncManager {
     private void setClassMapping(){
 
         Set<Class<? extends RealmModel>> MODEL_CLASSES
-                = helperInstance.getRealmInstance().getConfiguration().getRealmObjectClasses();
+                = realmPersistenceHelperInstance.getRealmInstance().getConfiguration().getRealmObjectClasses();
 
         MODEL_CLASSES.forEach(new Consumer<Class<? extends RealmModel>>() {
             @Override
@@ -492,19 +491,19 @@ public class SyncManager {
 
         try {
 
-            helperInstance.beginWriteTransaction();
+            realmPersistenceHelperInstance.beginWriteTransaction();
             SyncStore syncStore = new SyncStore();
             syncStore.setUniqueId("token");
             syncStore.setSync_token(sync_token);
             syncStore.setPagination_token(pagination_token);
-            //helperInstance.getRealmInstance().insertOrUpdate(new SyncStore("token", sync_token, pagination_token));
-            helperInstance.getRealmInstance().insertOrUpdate(syncStore);
-            helperInstance.commitWriteTransaction();
+            //realmPersistenceHelperInstance.getRealmInstance().insertOrUpdate(new SyncStore("token", sync_token, pagination_token));
+            realmPersistenceHelperInstance.getRealmInstance().insertOrUpdate(syncStore);
+            realmPersistenceHelperInstance.commitWriteTransaction();
 
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            helperInstance.closeTransaction();
+            realmPersistenceHelperInstance.closeTransaction();
         }
     }
 
