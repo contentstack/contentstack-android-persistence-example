@@ -10,8 +10,8 @@ import android.widget.Toast;
 import com.contentstack.persistance.BaseApp;
 import com.contentstack.persistance.R;
 import com.contentstack.persistance.databinding.ActivitySplashBinding;
-import com.contentstack.persistance.manager.RealmPersistenceHelper;
-import com.contentstack.persistance.manager.SyncManager;
+import com.contentstack.persistance.syncwrapper.RealmPersistenceHelper;
+import com.contentstack.persistance.syncwrapper.SyncManager;
 import com.contentstack.sdk.Stack;
 
 import io.realm.Realm;
