@@ -78,11 +78,11 @@ There are three important items to be mapped in our Synchronization process:
 - Entries Mapping
 - Assets  Mapping
 
-Let’s look at how to persists sync_token & pagonation token
+Let’s look at how to persist Sync Token & Pagination Token
 
 #### Sync token/pagination token
 
-To save Sync-Token and Pagination-Token, we need SyncStore class file  which will manage the storage and retrieval of updated sync token and pagination token.
+To save Sync Token and Pagination Token, we need SyncStore class file  which will manage the storage and retrieval of updated Sync Token and Pagination Token.
 
 ```
 if (stackResponse.getPaginationToken()!=null){
