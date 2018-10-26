@@ -9,13 +9,13 @@ import io.realm.RealmResults;
 import static io.realm.Realm.getDefaultInstance;
 
 
-public class Helper implements DbQuery{
+public class RealmPersistenceHelper implements DbQuery{
 
     private Realm realmInstance;
-    private String TAG = Helper.class.getSimpleName();
+    private String TAG = RealmPersistenceHelper.class.getSimpleName();
 
 
-    public Helper(Realm realmInstance) {
+    public RealmPersistenceHelper(Realm realmInstance) {
         this.realmInstance = realmInstance;
     }
 

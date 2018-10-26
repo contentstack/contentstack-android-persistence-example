@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.contentstack.persistance.BaseApp;
 import com.contentstack.persistance.R;
 import com.contentstack.persistance.databinding.ActivitySessionBinding;
-import com.contentstack.persistance.manager.Helper;
+import com.contentstack.persistance.manager.RealmPersistenceHelper;
 import com.contentstack.persistance.manager.SyncManager;
 import com.contentstack.persistance.table.Session;
 import com.contentstack.sdk.Stack;
@@ -80,16 +80,16 @@ public class SessionActivity extends AppCompatActivity implements SyncListener {
 
     /* This is the code used for implementing Offline persistence*/
     /* Make  stack request for check for updated content
-     * SyncManager takes Helper instance and stack in the parameter
-     * Helper can be initialise like below:
-     * Helper helperInstance = new Helper("realm-instance")
+     * SyncManager takes RealmPersistenceHelper instance and stack in the parameter
+     * RealmPersistenceHelper can be initialise like below:
+     * RealmPersistenceHelper helperInstance = new RealmPersistenceHelper("realm-instance")
      * Pass to SyncManager; */
 
     private void fetchUpdatedContent() {
 
-        Helper helper = new Helper(realmInstance);
+        RealmPersistenceHelper realmPersistenceHelper = new RealmPersistenceHelper(realmInstance);
         Stack stack = BaseApp.getStack();
-        SyncManager syncManager = new SyncManager(helper, stack);
+        SyncManager syncManager = new SyncManager(realmPersistenceHelper, stack);
         syncManager.setViewListener(this);
         syncManager.stackRequest();
     }

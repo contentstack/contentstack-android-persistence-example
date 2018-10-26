@@ -10,7 +10,7 @@ import android.widget.Toast;
 import com.contentstack.persistance.BaseApp;
 import com.contentstack.persistance.R;
 import com.contentstack.persistance.databinding.ActivitySplashBinding;
-import com.contentstack.persistance.manager.Helper;
+import com.contentstack.persistance.manager.RealmPersistenceHelper;
 import com.contentstack.persistance.manager.SyncManager;
 import com.contentstack.sdk.Stack;
 
@@ -38,10 +38,10 @@ public class Splash extends AppCompatActivity implements SyncListener{
         Realm realm = BaseApp.getRealm();
         // Get Stack instance
         Stack stack = BaseApp.getStack();
-        // get Helper instance
-        Helper helper = new Helper(realm);
-        // get SyncManager instance by passing helper and stack instance
-        SyncManager syncManager = new SyncManager(helper, stack);
+        // get RealmPersistenceHelper instance
+        RealmPersistenceHelper realmPersistenceHelper = new RealmPersistenceHelper(realm);
+        // get SyncManager instance by passing realmPersistenceHelper and stack instance
+        SyncManager syncManager = new SyncManager(realmPersistenceHelper, stack);
         syncManager.setViewListener(this);
         syncManager.stackRequest();
     }
