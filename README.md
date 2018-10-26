@@ -6,7 +6,7 @@ The [Persistence Library](https://www.contentstack.com/docs/guide/synchronizatio
 Perform the steps given below to use this app.
 
 ### Prerequisites
-* [Android Studio]()
+* [Android Studio](https://developer.android.com/studio/)
 * [Contentstack account](https://app.contentstack.com/#!/login)
 * [Basic knowledge of Contentstack](https://www.contentstack.com/docs/)
 
@@ -58,7 +58,7 @@ We need to first download Realm and install it. To do so, perform the steps give
 
 Now that your Realm installation is ready, let's look at the steps involved in setting up your Contentstack SDK.
 
-1. Download and set up the Contentstack android SDK. Read the [Contentstack android SDK Documentation]([https://www.contentstack.com/docs/platforms/android](https://www.contentstack.com/docs/platforms/android)) for more details.
+1. Download and set up the Contentstack android SDK. Read the [Contentstack Android SDK documentation](https://www.contentstack.com/docs/platforms/android) for more details.
 
 2. You will find the "syncwrapper" folder, which contains the following four files:
    - SyncManager
@@ -82,7 +82,7 @@ Let’s look at how to persist Sync Token & Pagination Token
 
 #### Sync token/pagination token
 
-To save Sync Token and Pagination Token, we need SyncStore class file  which will manage the storage and retrieval of updated Sync Token and Pagination Token.
+To save the sync token and the pagination token, we need the SyncStore class file, which will manage the storage and retrieval of the updated sync token and pagination token.
 
 ```
 if (stackResponse.getPaginationToken()!=null){
@@ -94,10 +94,9 @@ if (stackResponse.getPaginationToken()!=null){
 
 #### Entry Mapping
 
-To begin with, let’s consider an example of our Example app. Let’s say we have  content type: Session.
-Let’s see how to implement this example.
+To begin with, let’s consider the example of our demo app. Let’s say we have a content type 'Session'. Let’s see how to implement this example.
 
-Create a table class named Session extending RealmObject, and add following code to implement EntityFields as shown below:
+Create a table class named Session, extending RealmObject, and add following code to implement EntityFields as shown below:
 
 ```
 // @RealmClass accepts ("name= "content_type_uid"")
@@ -153,11 +152,11 @@ public class Session extends RealmObject {
 
 You also need to implement the fieldMapping function which returns the mapping of attributes and entry fields in Contentstack.
 
-Similarly, we can add other entries and mapping for each entry.
+Similarly, we can add other entries and do mapping for each entry.
 
-#### Asset Map
+#### Assets Mapping
 
-To map Assets, you need to create a table for assets named SysAssets and extend RealmObject. Add the following code to implement AssetProtocol.
+To map assets, you need to create a table for assets named SysAssets and extend RealmObject. Add the following code to implement AssetProtocol.
 
 ```
 @RealmClass(name="sys_assets")
@@ -207,10 +206,10 @@ public class SysAssets extends RealmObject {
    }
 ```
 
-Now, our final step is to initiate SyncManager and begin with the Sync content type.
+Now, our final step is to initiate SyncManager and begin with sync.
 
 ### Step 9: Initiate SyncManager and Sync
-Finally, after setting up the content mapping, initiate SyncManager. It takes Stack instance and RealmPersistenceHelper class instance as follows:
+Finally, after setting up the content mapping, initiate SyncManager. It takes the stack instance and the RealmPersistenceHelper class instance as follows:
 
 ```
 //Get stack instance like below
@@ -223,10 +222,8 @@ RealmPersistenceHelper realmPersistenceHelper = new RealmPersistenceHelper(realm
 SyncManager manager = new SyncManager(realmPersistenceHelper, stack);
 manager.stackRequest()
 ```
-Screenshot
 
 <img src="https://github.com/contentstack/contentstack-android-persistence-example/blob/master/app/src/main/assets/image/example.png"  height="500" width="280">
-
 
 
 ### More Resources
