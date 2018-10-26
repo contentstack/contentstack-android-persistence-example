@@ -210,7 +210,7 @@ public class SysAssets extends RealmObject {
 Now, our final step is to initiate SyncManager and begin with the Sync content type.
 
 ### Step 8: Initiate SyncManager and Sync
-Finally, after setting up the content mapping, initiate SyncManager. It takes Stack instance and Helper class instance as follows:
+Finally, after setting up the content mapping, initiate SyncManager. It takes Stack instance and RealmPersistenceHelper class instance as follows:
 
 ```
 //Get stack instance like below
