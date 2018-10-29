@@ -215,10 +215,6 @@ Finally, after setting up the content mapping, initiate SyncManager. It takes th
 //Get stack instance like below
 Stack stack = Contentstack.stack(context, "api_key", "access_token", "environment");
 
-- RealmStore
-- SyncManager  
-- SyncPersistable  
-- SyncStore
 
 //Get realm instance like below
 Realm realmInstance = Realm.getDefaultInstance();
