@@ -61,10 +61,10 @@ Now that your Realm installation is ready, let's look at the steps involved in s
 1. Download and set up the Contentstack android SDK. Read the [Contentstack Android SDK documentation](https://www.contentstack.com/docs/platforms/android) for more details.
 
 2. You will find the "syncwrapper" folder, which contains the following four files:
-   - SyncManager
-   - RealmPersistenceHelper
+   - RealmStore
+   - SyncManager  
+   - SyncPersistable  
    - SyncStore
-   - DbQuery
 
 3. Add the "syncwrapper" folder to your src folder in project.
 
@@ -215,11 +215,16 @@ Finally, after setting up the content mapping, initiate SyncManager. It takes th
 //Get stack instance like below
 Stack stack = Contentstack.stack(context, "api_key", "access_token", "environment");
 
+- RealmStore
+- SyncManager  
+- SyncPersistable  
+- SyncStore
+
 //Get realm instance like below
 Realm realmInstance = Realm.getDefaultInstance();
 Get realmPersistenceHelper instance like
-RealmPersistenceHelper realmPersistenceHelper = new RealmPersistenceHelper(realmInstance)
-SyncManager manager = new SyncManager(realmPersistenceHelper, stack);
+RealmStore realmStore = new RealmStore(realmInstance)
+SyncManager manager = new SyncManager(realmStore, stack);
 manager.stackRequest()
 ```
 
