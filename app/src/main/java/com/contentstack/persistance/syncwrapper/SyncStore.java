@@ -10,9 +10,8 @@ public class SyncStore extends RealmObject {
     private String sync_token;
     private String pagination_token;
 
-
-    public SyncStore() { }
-
+    public SyncStore() {
+    }
 
     public SyncStore(String uniqueId, String sync_token, String pagination_token) {
         this.uniqueId = uniqueId;

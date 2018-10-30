@@ -11,7 +11,7 @@ import android.widget.Toast;
 import com.contentstack.persistance.BaseApp;
 import com.contentstack.persistance.R;
 import com.contentstack.persistance.databinding.ActivitySessionBinding;
-import com.contentstack.persistance.syncwrapper.RealmPersistenceHelper;
+import com.contentstack.persistance.syncwrapper.RealmStore;
 import com.contentstack.persistance.syncwrapper.SyncManager;
 import com.contentstack.persistance.table.Session;
 import com.contentstack.sdk.Stack;
@@ -87,7 +87,7 @@ public class SessionActivity extends AppCompatActivity implements SyncListener {
 
     private void fetchUpdatedContent() {
 
-        RealmPersistenceHelper realmPersistenceHelper = new RealmPersistenceHelper(realmInstance);
+        RealmStore realmPersistenceHelper = new RealmStore(realmInstance);
         Stack stack = BaseApp.getStack();
         SyncManager syncManager = new SyncManager(realmPersistenceHelper, stack);
         syncManager.setViewListener(this);

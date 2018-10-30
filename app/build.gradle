@@ -14,10 +14,10 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField("String", "BASE_URL", "\"stag-cdn.contentstack.io\"")
-            buildConfigField("String", "API_KEY", "\"blt74a50c2ca360f373\"")
-            buildConfigField("String", "ACCESS_TOKEN", "\"cs277916ede0367f794aaa48c6\"")
-            buildConfigField("String", "DELIVERY_TOKEN", "\"cs277916ede0367f794aaa48c6\"")
+            buildConfigField("String", "BASE_URL", "\"cdn.contentstack.io\"")
+            buildConfigField("String", "API_KEY", "\"blt477ba55f9a67bcdf\"")
+            buildConfigField("String", "ACCESS_TOKEN", "\"cs7731f03a2feef7713546fde5\"")
+            buildConfigField("String", "DELIVERY_TOKEN", "\"cs7731f03a2feef7713546fde5\"")
             buildConfigField("String", "ENVIRONMENT", "\"web\"")
         }
         release {
