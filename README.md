@@ -1,22 +1,22 @@
-## Build an example app using Sync API and Persistence Library with Contentstack’s Android SDK
+# Build an example app using Sync API and Persistence Library with Contentstack’s Android SDK
 This is an example app built using Contentstack’s Android SDK, Sync API, and Persistence Library. You can try out and play with our Sync API and data persistence with this example app, before building bigger and better applications.
 
 The [Persistence Library](https://www.contentstack.com/docs/guide/synchronization/using-realm-persistence-library-with-android-sync-sdk) lets you store data on the device’s local storage, helping you create apps that can work offline too.  Perform the steps given below to use the app.
 
 Perform the steps given below to use this app.
 
-### Prerequisites
+## Prerequisites
 * [Android Studio](https://developer.android.com/studio/)
 * [Contentstack account](https://app.contentstack.com/#!/login)
 * [Basic knowledge of Contentstack](https://www.contentstack.com/docs/)
 
 In this tutorial, we will first go through the steps involved in configuring Contentstack and then look at the steps required to customize and use the presentation layer.
 
-#### Step 1: Create a stack
+## Step 1: Create a stack
 Log in to your Contentstack account, and [create a new stack](https://www.contentstack.com/docs/guide/stack#create-a-new-stack). Read more about [stack](https://www.contentstack.com/docs/guide/stack).
-#### Step 2: Add a publishing environment
+## Step 2: Add a publishing environment
 [Add a publishing environment](https://www.contentstack.com/docs/guide/environments#add-an-environment) to publish your content in Contentstack. Provide the necessary details as per your requirement. Read more about [environments](https://www.contentstack.com/docs/guide/environments).
-#### Step 3: Import content types
+## Step 3: Import content types
 For this app, we need just one content type: Session. Here’s what it’s needed for:
 
 - Session: Lets you add the session content to your app
@@ -26,14 +26,14 @@ For quick integration, we have already created the content type. [Download the c
 
 Now that all the content types are ready, let’s add some content for your Stack.
 
-#### Step 4: Adding content
+## Step 4: Add content
 [Create](https://www.contentstack.com/docs/guide/content-management#add-a-new-entry) and [publish](https://www.contentstack.com/docs/guide/content-management#publish-an-entry) entries for the ‘Session’ content type.
 
 Now that we have created the sample data, it’s time to use and configure the presentation layer.
 
 
 
-#### Step 5: Clone and configure the application
+## Step 5: Clone and configure the application
 To get your app up and running quickly, we have created a sample app. Clone the Github repo given below and change the configuration as per your need:
 
 ```
@@ -49,12 +49,7 @@ Stack stack = Contentstack.stack(context,“api_key”, “delivery_token”, �
 
 This will initiate your project.
 
-#### Step 6: Install and set up Realm
-We need to first download Realm and install it. To do so, perform the steps given below:
-
-- Add the latest version of [Realm](https://realm.io/docs/java/latest) library in your project and follow the [installation](https://realm.io/docs/java/latest#installation) gulde to complete setup.
-
-#### Step 7: Install Contentstack Android SDK and SyncManager
+## Step 6: Install Contentstack Android SDK and SyncManager
 
 Now that your Realm installation is ready, let's look at the steps involved in setting up your Contentstack SDK.
 
@@ -68,8 +63,13 @@ Now that your Realm installation is ready, let's look at the steps involved in s
 
 3. Add the "syncwrapper" folder to your src folder in project.
 
+## Step 7: Install and set up Realm
+We need to first download Realm and install it. To do so, perform the steps given below:
 
-#### Step 8: Map data
+- Add the latest version of [Realm](https://realm.io/docs/java/latest) library in your project and follow the [installation](https://realm.io/docs/java/latest#installation) gulde to complete setup.
+
+
+## Step 8: Map data
 
 
 There are three important items to be mapped in our Synchronization process:
@@ -80,7 +80,7 @@ There are three important items to be mapped in our Synchronization process:
 
 Let’s look at how to persist Sync Token & Pagination Token
 
-#### Sync token/pagination token
+### Sync token/pagination token
 
 To save the sync token and the pagination token, we need the SyncStore class file, which will manage the storage and retrieval of the updated sync token and pagination token.
 
@@ -92,7 +92,7 @@ if (stackResponse.getPaginationToken()!=null){
 }
 ```
 
-#### Entry Mapping
+### Entry Mapping
 
 To begin with, let’s consider the example of our demo app. Let’s say we have a content type 'Session'. Let’s see how to implement this example.
 
@@ -154,7 +154,7 @@ You also need to implement the fieldMapping function which returns the mapping o
 
 Similarly, we can add other entries and do mapping for each entry.
 
-#### Assets Mapping
+### Assets Mapping
 
 To map assets, you need to create a table for assets named SysAssets and extend RealmObject. Add the following code to implement AssetProtocol.
 
@@ -208,7 +208,7 @@ public class SysAssets extends RealmObject {
 
 Now, our final step is to initiate SyncManager and begin with sync.
 
-### Step 9: Initiate SyncManager and Sync
+## Step 9: Initiate SyncManager and Sync
 Finally, after setting up the content mapping, initiate SyncManager. It takes the stack instance and the RealmPersistenceHelper class instance as follows:
 
 ```
@@ -227,7 +227,7 @@ manager.stackRequest()
 <img src="https://github.com/contentstack/contentstack-android-persistence-example/blob/master/app/src/main/assets/image/example.png"  height="500" width="280">
 
 
-### More Resources
+## More Resources
 * [Getting started with Android SDK](https://www.contentstack.com/docs/platforms/android)
 * [Using the Sync API with Android SDK](https://www.contentstack.com/docs/guide/synchronization/using-the-sync-api-with-android-sdk)
 * [Using Persistence Library with Android SDK](https://www.contentstack.com/docs/guide/synchronization/using-realm-persistence-library-with-android-sync-sdk)
