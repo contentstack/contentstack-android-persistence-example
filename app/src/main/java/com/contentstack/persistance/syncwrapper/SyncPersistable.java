@@ -1,10 +1,11 @@
 package com.contentstack.persistance.syncwrapper;
 
 import org.json.JSONArray;
+
 import io.realm.RealmObject;
 import io.realm.RealmResults;
 
-public interface DbQuery {
+public interface SyncPersistable {
 
     void beginWriteTransaction();
 

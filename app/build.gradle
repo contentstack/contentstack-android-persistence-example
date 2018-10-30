@@ -14,7 +14,7 @@ android {
     buildTypes {
 
         debug {
-            buildConfigField("String", "BASE_URL", "\"stag-cdn.contentstack.io\"")
+            buildConfigField("String", "BASE_URL", "\"cdn.contentstack.io\"")
             buildConfigField("String", "API_KEY", "\"***REMOVED***\"")
             buildConfigField("String", "ACCESS_TOKEN", "\"***REMOVED***\"")
             buildConfigField("String", "DELIVERY_TOKEN", "\"***REMOVED***\"")

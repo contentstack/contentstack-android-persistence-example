@@ -9,11 +9,13 @@ import io.realm.RealmResults;
 import static io.realm.Realm.getDefaultInstance;
 
 
-public class RealmPersistenceHelper implements DbQuery{
+public class RealmStore implements SyncPersistable {
 
     private Realm realmInstance;
 
-    public RealmPersistenceHelper(Realm realmInstance) {
+    private String TAG = RealmStore.class.getSimpleName();
+
+    public RealmStore(Realm realmInstance) {
         this.realmInstance = realmInstance;
     }
 
@@ -23,7 +25,7 @@ public class RealmPersistenceHelper implements DbQuery{
 
 
     @Override
-    public RealmObject findOrCreate(Class<? extends RealmObject> className, String uid, JSONArray jsonObjectString) {
+    public RealmObject findOrCreate(Class<? extends RealmObject> className, String uid,  JSONArray jsonObjectString) {
 
         try {
 
@@ -55,7 +57,7 @@ public class RealmPersistenceHelper implements DbQuery{
 
 
     @Override
-    public void deleteRow(Class<? extends RealmObject> className, String uid){
+    public void deleteRow(final Class<? extends RealmObject> className, final String uid){
 
         realmInstance.executeTransaction(new Realm.Transaction() {
             @Override
@@ -74,12 +76,15 @@ public class RealmPersistenceHelper implements DbQuery{
 
     @Override
     public void deleteTable(Class<? extends RealmObject> className) {
-        realmInstance.executeTransaction(new Realm.Transaction() {
-            @Override
-            public void execute(Realm realm) {
-                realm.deleteAll();
-            }
-        });
+
+        if (className!=null) {
+            realmInstance.executeTransaction(new Realm.Transaction() {
+                @Override
+                public void execute(Realm realm) {
+                    realm.deleteAll();
+                }
+            });
+        }
     }
 
 

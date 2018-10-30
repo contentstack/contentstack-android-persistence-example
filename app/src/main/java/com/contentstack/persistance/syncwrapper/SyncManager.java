@@ -33,34 +33,27 @@ import io.realm.annotations.RealmField;
 public class SyncManager {
 
     private Stack stackInstance;
-
-    private RealmPersistenceHelper realmPersistenceHelperInstance;
-
-    private Realm realmInstance;
-
+    private RealmStore realmStoreInstance;
+    private Realm  realmInstance;
     private ArrayMap<String, Class> CONTENT_TYPE_CLASS_MAPPER = new ArrayMap<String, Class>();
-
     private ArrayMap<Class, ArrayMap<String, String>> CLASS_FIELDS_MAPPER = new ArrayMap<Class, ArrayMap<String, String>>();
-
     private String TAG = SyncManager.class.getSimpleName();
-
     private SyncListener syncListener;
 
 
-
     /**
-     * SyncManager Constructor to initialise the Sync Manager
-     * and get @{@link RealmPersistenceHelper} and @{@link Stack} class instance
-     * @param realmPersistenceHelper @{@link RealmPersistenceHelper} instance
-     * @param stackInstance @{@link Stack} instance
+     *  SyncManager Constructor Accepts below two parameters
+     * @param realmStore @{@link RealmStore} that accepts realm instance to initialise.
+     * @param stackInstance @{@link Stack} takes stackInstance as second parameter.
      */
-    public SyncManager(RealmPersistenceHelper realmPersistenceHelper, Stack stackInstance) {
+    public SyncManager(RealmStore realmStore, Stack stackInstance) {
 
-        this.realmPersistenceHelperInstance = realmPersistenceHelper;
+        this.realmStoreInstance = realmStore;
         this.stackInstance  = stackInstance;
-        realmInstance = realmPersistenceHelperInstance.getRealmInstance();
+        realmInstance = realmStoreInstance.getRealmInstance();
         setClassMapping();
     }
+
 
 
     public void setViewListener(SessionActivity session) {
@@ -71,16 +64,55 @@ public class SyncManager {
         syncListener = splash;
     }
 
-    /**
-     * It finds stored sync_token for next api call
-     * @return sync token @{@link String}
-     */
+
+
+    // Initialise Persistence manager
+    public void stackRequest()    {
+
+        if (getSyncToken()!=null){
+            stackInstance.syncToken(getSyncToken(), new SyncResultCallBack() {
+                @Override
+                public void onCompletion(SyncStack syncStack, Error error) {
+                    if (error == null){
+                        parseResponse(syncStack);
+                    }
+                }
+            });
+
+        }else if (getPaginationToken()!=null){
+
+
+            stackInstance.syncPaginationToken(getPaginationToken(),  new SyncResultCallBack() {
+                @Override
+                public void onCompletion(SyncStack syncStack, Error error) {
+                    if (error == null){
+                        parseResponse(syncStack);
+                    }
+                }
+            });
+
+        }else {
+            stackInstance.sync(new SyncResultCallBack() {
+                @Override
+                public void onCompletion(SyncStack syncStack, Error error) {
+                    if (error == null) {
+                        parseResponse(syncStack);
+                    }else {
+                        Log.e(TAG,error.getErrorMessage());
+                    }
+                }
+            });
+        }
+    }
+
+
+
     private String getSyncToken(){
 
-        SyncStore tokenStore = realmInstance.where(SyncStore.class).findFirst();
-        if (tokenStore !=null ){
+        SyncStore sync_store = realmInstance.where(SyncStore.class).findFirst();
+        if (sync_store!=null){
             return realmInstance.where(SyncStore.class).findFirst().getSync_token();
-        }else {
+        }else{
             return null;
         }
 
@@ -88,73 +120,16 @@ public class SyncManager {
 
 
     private String getPaginationToken(){
-        SyncStore tokenStore = realmInstance.where(SyncStore.class).findFirst();
-        if (tokenStore !=null ){
+
+        SyncStore sync_store = realmInstance.where(SyncStore.class).findFirst();
+        if (sync_store!=null){
             return realmInstance.where(SyncStore.class).findFirst().getPagination_token();
-        }else {
+        }else{
             return null;
         }
     }
 
 
-
-    /**
-     * It provides sync request to create or update data in the local database system
-     */
-    public void stackRequest()    {
-
-
-        if (getSyncToken()!= null){
-
-            stackInstance.syncToken(getSyncToken(), new SyncResultCallBack() {
-                @Override
-                public void onCompletion(SyncStack syncStack, Error error) {
-                    if (error == null){
-                        syncListener.onSuccessListener();
-                        parseResponse(syncStack);
-                    }
-                }
-            });
-
-        }else if (getPaginationToken()!= null){
-
-            stackInstance.syncPaginationToken(getPaginationToken(),  new SyncResultCallBack() {
-                @Override
-                public void onCompletion(SyncStack syncStack, Error error) {
-                    if (error == null){
-                        syncListener.onSuccessListener();
-                        parseResponse(syncStack);
-                    }
-                }
-            });
-
-        }else {
-
-            stackInstance.sync(new SyncResultCallBack() {
-                @Override
-                public void onCompletion(SyncStack syncStack, Error error) {
-                    if (error == null) {
-                        syncListener.onSuccessListener();
-                        parseResponse(syncStack);
-                    }else {
-                        syncListener.onMessage(error.getErrorMessage());
-                        Log.e(TAG,error.getErrorMessage());
-                    }
-                }
-            });
-        }
-
-    }
-
-
-
-
-    /**
-     * SyncStack Response that contains other function from @{@link SyncStack}
-     * GetSyncToken() Limit etc...
-     * @param stackResponse
-     * parse JSON response and updated sync_token every time server results
-     */
     private void parseResponse(SyncStack stackResponse) {
 
         ArrayList<JSONObject> jsonList = stackResponse.getItems();
@@ -163,17 +138,11 @@ public class SyncManager {
         if (syncToken!=null){
             persistsToken(syncToken, pagiToken);
         }
+
         jsonList.forEach(item -> handleJSON(item));
     }
 
 
-
-
-    /**
-     * Takes a single Json object for processing the keys and values and insert in table on the
-     * basis of class and content_type_uid and delete the items form the table.
-     * @param item
-     */
     private void handleJSON(JSONObject item) {
 
         String content_type = item.optString("content_type_uid");
@@ -191,7 +160,7 @@ public class SyncManager {
 
                     JSONArray mapJSON = new JSONArray();
                     mapJSON.put(jsonDECODER(modelClass, resultObject));
-                    realmPersistenceHelperInstance.findOrCreate(modelClass, uid, mapJSON);
+                    realmStoreInstance.findOrCreate(modelClass, uid, mapJSON);
 
                 }else if (publishType.equalsIgnoreCase("entry_unpublished")
                         || publishType.equalsIgnoreCase("entry_deleted")
@@ -199,22 +168,16 @@ public class SyncManager {
                         || publishType.equalsIgnoreCase("asset_deleted")){
 
                     if (item.has("data")){
-                        realmPersistenceHelperInstance.deleteRow(modelClass, uid);
+                        realmStoreInstance.deleteRow(modelClass, uid);
                     }
                 }else if (publishType.equalsIgnoreCase("content_type_deleted")){
-                    realmPersistenceHelperInstance.deleteTable(modelClass);
+                    realmStoreInstance.deleteTable(modelClass);
                 }
             }
         }
     }
 
 
-
-
-    /**
-     * @param tableClass returns Table Model class name , It receives table name by Annotation created over class name.
-     * @param resultObject json object for the position in Json array result.
-     */
     private JSONObject jsonDECODER(Class tableClass, JSONObject resultObject) {
 
         JSONObject resultObj = new JSONObject();
@@ -237,24 +200,6 @@ public class SyncManager {
     }
 
 
-
-
-    private void checkForGroupAvailableToDelete(Class tableClass, String UID) {
-        Log.e("In Group Selection Deletion Dept", tableClass+" uid"+UID);
-        Object abcjd = realmInstance.where(tableClass).equalTo("uid", UID).contains("", "").findFirst();
-    }
-
-
-
-    /**
-     *
-     * @param tableClass @{@link Class<? extends io.realm.RealmObject>}
-     * @param reqObj Its is simple JSON which results a json to table  @{@link JSONObject}
-     * @param resultObject Its is Single Json Item for processing @{@link JSONObject}
-     * @param keyValueEntry  @Map.Entry
-     * @param keyString @{@link String}
-     * @return JSONObject
-     */
     private JSONObject getJsonTypeToParse(Class tableClass, JSONObject reqObj, JSONObject resultObject, Map.Entry keyValueEntry, String keyString) {
 
         try {
@@ -289,16 +234,6 @@ public class SyncManager {
     }
 
 
-
-
-    /**
-     * @param fieldName
-     * @param field
-     * @param reqObj
-     * @param refVALUE
-     * @return
-     * @throws JSONException
-     */
     private JSONObject caseWhenTableExtendsRealmObject(String fieldName, Field field, JSONObject reqObj, Object refVALUE) throws JSONException {
         JSONObject refCreate = new JSONObject();
 
@@ -330,17 +265,6 @@ public class SyncManager {
     }
 
 
-
-
-    /**
-     *
-     * @param fieldName
-     * @param reqObj
-     * @param refCreate
-     * @param refVALUE
-     * @return
-     * @throws JSONException
-     */
     private JSONObject caseWhenTableExtendsRealmList(String fieldName, Field field, JSONObject reqObj, JSONObject refCreate, Object refVALUE) throws JSONException{
 
         ParameterizedType ge = (ParameterizedType)field.getGenericType();
@@ -387,12 +311,6 @@ public class SyncManager {
     }
 
 
-
-
-    /**
-     * @param field check type of field
-     * @return String
-     */
     private String getInstanceOfField(Field field) {
 
         String checkTYPE = field.getType().getSuperclass().getSimpleName();
@@ -409,16 +327,10 @@ public class SyncManager {
     }
 
 
-
-
-    /**
-     * It find Class name basis of content_type uid
-     * Mapping of class and content type uid
-     */
     private void setClassMapping(){
 
         Set<Class<? extends RealmModel>> MODEL_CLASSES
-                = realmPersistenceHelperInstance.getRealmInstance().getConfiguration().getRealmObjectClasses();
+                = realmStoreInstance.getRealmInstance().getConfiguration().getRealmObjectClasses();
 
         MODEL_CLASSES.forEach(new Consumer<Class<? extends RealmModel>>() {
             @Override
@@ -430,14 +342,6 @@ public class SyncManager {
     }
 
 
-
-
-    /**
-     * Takes a class extending to super class (@{@link io.realm.RealmObject}//@{@link RealmModel})
-     * and gets its fields and annotated names to map field
-     * and their respected keys, it is useful at the time of response parsing.
-     * @param MODEL_CLASS
-     */
     private void reflectionThing(Class<? extends RealmModel> MODEL_CLASS) {
 
         for (Annotation annotation : MODEL_CLASS.getAnnotations()) {
@@ -481,31 +385,21 @@ public class SyncManager {
     }
 
 
-
-
-    /**
-     *
-     * @param sync_token returns updated sync token to find updated data stored to stack
-     */
     private void persistsToken(String sync_token, String pagination_token) {
 
         try {
 
-            realmPersistenceHelperInstance.beginWriteTransaction();
-            SyncStore syncStore = new SyncStore();
-            syncStore.setUniqueId("token");
-            syncStore.setSync_token(sync_token);
-            syncStore.setPagination_token(pagination_token);
-            //realmPersistenceHelperInstance.getRealmInstance().insertOrUpdate(new SyncStore("token", sync_token, pagination_token));
-            realmPersistenceHelperInstance.getRealmInstance().insertOrUpdate(syncStore);
-            realmPersistenceHelperInstance.commitWriteTransaction();
+            realmStoreInstance.beginWriteTransaction();
+            realmStoreInstance.getRealmInstance().insertOrUpdate(new SyncStore("token", sync_token, pagination_token));
+            realmStoreInstance.commitWriteTransaction();
 
         }catch (Exception e){
             e.printStackTrace();
         }finally {
-            realmPersistenceHelperInstance.closeTransaction();
+            realmStoreInstance.closeTransaction();
         }
     }
+
 
 
 
