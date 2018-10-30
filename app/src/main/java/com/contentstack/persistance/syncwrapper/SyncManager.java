@@ -66,43 +66,49 @@ public class SyncManager {
 
 
 
-    // Initialise Persistence manager
     public void stackRequest()    {
 
-        if (getSyncToken()!=null){
+
+        if (getSyncToken()!= null){
+
             stackInstance.syncToken(getSyncToken(), new SyncResultCallBack() {
                 @Override
                 public void onCompletion(SyncStack syncStack, Error error) {
                     if (error == null){
+                        syncListener.onSuccessListener();
                         parseResponse(syncStack);
                     }
                 }
             });
 
-        }else if (getPaginationToken()!=null){
-
+        }else if (getPaginationToken()!= null){
 
             stackInstance.syncPaginationToken(getPaginationToken(),  new SyncResultCallBack() {
                 @Override
                 public void onCompletion(SyncStack syncStack, Error error) {
                     if (error == null){
+                        syncListener.onSuccessListener();
                         parseResponse(syncStack);
                     }
                 }
             });
 
         }else {
+
             stackInstance.sync(new SyncResultCallBack() {
                 @Override
                 public void onCompletion(SyncStack syncStack, Error error) {
                     if (error == null) {
+                        syncListener.onSuccessListener();
                         parseResponse(syncStack);
                     }else {
+                        syncListener.onMessage(error.getErrorMessage());
                         Log.e(TAG,error.getErrorMessage());
                     }
                 }
             });
         }
+
     }
 
 
