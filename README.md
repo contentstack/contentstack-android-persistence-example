@@ -221,7 +221,6 @@ Realm realmInstance = Realm.getDefaultInstance();
 Get realmPersistenceHelper instance like
 RealmStore realmStore = new RealmStore(realmInstance);
 SyncManager syncManager = new SyncManager(realmStore, stack);
-syncManager.setViewListener(this);
 syncManager.stackRequest();
 
 
