@@ -217,7 +217,7 @@ Stack stack = Contentstack.stack(context, "api_key", "access_token", "environmen
 
 //Get realm instance like below
    Realm realmInstance = Realm.getDefaultInstance();
-   Get realmStore instance like below by passing realmInsatance to its constructor.
+//Get realmStore instance by passing realmInsatance to its constructor like below.
    RealmStore realmStore = new RealmStore(realmInstance);
    SyncManager syncManager = new SyncManager(realmStore, stack);
    syncManager.stackRequest();
