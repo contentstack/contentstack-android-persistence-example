@@ -74,8 +74,8 @@ Now that your Realm installation is ready, let's look at the steps involved in s
 There are three important items to be mapped in our Synchronization process:
 
 - Sync token/pagination token
-- Entries Mapping
-- Assets  Mapping
+- Entries
+- Assets
 
 Let’s look at how to persist Sync Token & Pagination Token
 
