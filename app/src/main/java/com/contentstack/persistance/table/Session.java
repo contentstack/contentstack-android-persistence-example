@@ -3,7 +3,7 @@ package com.contentstack.persistance.table;
 
 import android.annotation.SuppressLint;
 import android.os.Build;
-import android.support.annotation.RequiresApi;
+import androidx.annotation.RequiresApi;
 
 import java.text.SimpleDateFormat;
 import java.time.Instant;
