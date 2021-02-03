@@ -1,4 +1,4 @@
-## Build an example app using Sync API and Persistence Library with Contentstack’s Android SDK
+# Build an example app using Sync API and Persistence Library with Contentstack’s Android SDK
 This is an example app built using Contentstack’s Android SDK, Sync API, and Persistence Library. You can try out and play with our Sync API and data persistence with this example app, before building bigger and better applications.
 
 The [Persistence Library](https://www.contentstack.com/docs/guide/synchronization/using-realm-persistence-library-with-android-sync-sdk) lets you store data on the device’s local storage, helping you create apps that can work offline too.  Perform the steps given below to use the app.
