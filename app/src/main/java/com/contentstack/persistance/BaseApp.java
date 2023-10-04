@@ -17,7 +17,6 @@ public class BaseApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
-        //Multidex.install();
         Realm.init(getApplicationContext());
         Config config = new Config();
         config.setHost(BuildConfig.BASE_URL);
