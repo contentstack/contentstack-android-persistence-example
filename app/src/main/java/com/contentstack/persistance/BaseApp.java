@@ -2,7 +2,12 @@ package com.contentstack.persistance;
 import android.app.Application;
 import com.contentstack.sdk.Config;
 import com.contentstack.sdk.Contentstack;
+import com.contentstack.sdk.Error;
 import com.contentstack.sdk.Stack;
+import com.contentstack.sdk.SyncResultCallBack;
+import com.contentstack.sdk.SyncStack;
+
+import java.util.Date;
 
 import io.realm.Realm;
 
